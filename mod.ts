@@ -3,3 +3,4 @@
 
 export { conditionalRequest } from "./middleware.ts";
 export { IfNoneMatch } from "./preconditions/if_none_match.ts";
+export { IfMatch } from "./preconditions/if_match.ts";
