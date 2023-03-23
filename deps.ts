@@ -11,7 +11,6 @@ export {
   isNegativeNumber,
   isNull,
   isNumber,
-  isValidDate,
 } from "https://deno.land/x/isx@1.0.0-beta.24/mod.ts";
 export {
   type Handler,
@@ -29,6 +28,12 @@ export {
   isRetrieveMethod,
   Method,
 } from "https://deno.land/x/http_utils@1.0.0-beta.14/method.ts";
+export {
+  type ETag,
+  type ETagFormat,
+  parse as parseETag,
+} from "https://deno.land/x/etag_parser@1.0.0/mod.ts";
+export { isErr, unsafe } from "https://deno.land/x/result_js@1.0.0/mod.ts";
 export { ascend } from "https://deno.land/std@0.180.0/collections/_comparators.ts";
 
 export function not<T extends readonly unknown[]>(

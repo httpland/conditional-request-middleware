@@ -1,12 +1,14 @@
 import {
   ConditionalHeader,
   filterKeys,
+  isErr,
   isNull,
   isRepresentationHeader,
   isRetrieveMethod,
   not,
   RepresentationHeader,
   Status,
+  unsafe,
 } from "../deps.ts";
 import type { Precondition } from "../types.ts";
 import { ifNoneMatch, isBannedHeader } from "./utils.ts";
@@ -17,11 +19,15 @@ export class IfNoneMatch implements Precondition {
 
   evaluate(request: Request, response: Response): boolean | undefined {
     const fieldValue = request.headers.get(ConditionalHeader.IfNoneMatch);
-    const etag = response.headers.get(RepresentationHeader.ETag);
+    const etagValue = response.headers.get(RepresentationHeader.ETag);
 
-    if (isNull(fieldValue) || isNull(etag)) return;
+    if (isNull(fieldValue) || isNull(etagValue)) return;
 
-    return ifNoneMatch(fieldValue.trim(), etag.trim());
+    const result = unsafe(() => ifNoneMatch(fieldValue, etagValue));
+
+    if (isErr(result)) return;
+
+    return result.value;
   }
 
   respond(
