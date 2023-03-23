@@ -12,7 +12,7 @@ import {
 import { IfModifiedSince } from "./if_modified_since.ts";
 
 describe("IfModifiedSince", () => {
-  it("should be if-modified-match", () => {
+  it("should be if-modified-since", () => {
     assertEquals(
       new IfModifiedSince().field,
       ConditionalHeader.IfModifiedSince,
