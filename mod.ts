@@ -4,3 +4,4 @@
 export { conditionalRequest } from "./middleware.ts";
 export { IfNoneMatch } from "./preconditions/if_none_match.ts";
 export { IfMatch } from "./preconditions/if_match.ts";
+export { IfModifiedSince } from "./preconditions/if_modified_since.ts";
