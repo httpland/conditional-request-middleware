@@ -2,3 +2,4 @@
 // This module is browser compatible.
 
 export { conditionalRequest } from "./middleware.ts";
+export { IfNoneMatch } from "./preconditions/if_none_match.ts";
