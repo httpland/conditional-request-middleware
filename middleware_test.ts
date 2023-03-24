@@ -7,6 +7,7 @@ import {
   equalsResponse,
   it,
   Method,
+  RangeHeader,
   RepresentationHeader,
   spy,
   Status,
@@ -371,6 +372,92 @@ describe("conditionalRequest", () => {
     assertSpyCalls(selectRepresentation, 1);
     assertSpyCalls(handler, 1);
     assert(response === initResponse);
+  });
+
+  it("should return 206 response if request has if-range and range header and match etag", async () => {
+    const ETAG = `""`;
+    const selectRepresentation = spy(() =>
+      new Response("abcdef", {
+        headers: { [RepresentationHeader.ETag]: ETAG },
+      })
+    );
+    const middleware = conditionalRequest(selectRepresentation);
+    const request = new Request("test:", {
+      headers: {
+        [ConditionalHeader.IfRange]: ETAG,
+        [RangeHeader.Range]: "bytes=-3",
+      },
+    });
+    const handler = spy(() => new Response());
+
+    const response = await middleware(request, handler);
+
+    assertSpyCalls(selectRepresentation, 1);
+    assertSpyCalls(handler, 0);
+
+    assert(
+      await equalsResponse(
+        response,
+        new Response("def", {
+          status: Status.PartialContent,
+          headers: {
+            [RangeHeader.ContentRange]: "bytes 3-5/6",
+            [RepresentationHeader.ETag]: ETAG,
+          },
+        }),
+        true,
+      ),
+    );
+  });
+
+  it("should return 206 response if request has if-range and range header and match last-modified", async () => {
+    const lastModified = new Date("2000/1/1").toUTCString();
+    const selectRepresentation = spy(() =>
+      new Response("abcdef", {
+        headers: { [RepresentationHeader.LastModified]: lastModified },
+      })
+    );
+    const middleware = conditionalRequest(selectRepresentation);
+    const request = new Request("test:", {
+      headers: {
+        [ConditionalHeader.IfRange]: lastModified,
+        [RangeHeader.Range]: "bytes=4-, -3",
+      },
+    });
+    const handler = spy(() => new Response());
+    const response = await middleware(request, handler);
+    const BOUNDARY = "1f8ac10f23c5b5bc1167bda84b833e5c057a77d2";
+
+    assertSpyCalls(selectRepresentation, 1);
+    assertSpyCalls(handler, 0);
+
+    assert(
+      await equalsResponse(
+        response,
+        new Response(
+          `--${BOUNDARY}
+Content-Type: text/plain;charset=UTF-8
+Content-Range: bytes 4-5/6
+
+ef
+--${BOUNDARY}
+Content-Type: text/plain;charset=UTF-8
+Content-Range: bytes 3-5/6
+
+def
+--${BOUNDARY}--`,
+          {
+            status: Status.PartialContent,
+            headers: {
+              [RepresentationHeader.LastModified]: lastModified,
+              [RepresentationHeader.ContentType]:
+                `multipart/byteranges; boundary=${BOUNDARY}`,
+            },
+          },
+        ),
+        true,
+      ),
+    );
   });
 
   it("should return next response if the filtered preconditions is empty", async () => {

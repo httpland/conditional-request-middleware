@@ -13,17 +13,11 @@ import { IfNoneMatch } from "./preconditions/if_none_match.ts";
 import { IfMatch } from "./preconditions/if_match.ts";
 import { IfModifiedSince } from "./preconditions/if_modified_since.ts";
 import { IfUnmodifiedSince } from "./preconditions/if_unmodified_since.ts";
-
-const DEFAULT_PRECONDITIONS = [
-  IfMatch,
-  IfNoneMatch,
-  IfModifiedSince,
-  IfUnmodifiedSince,
-];
+import { IfRange } from "./preconditions/if_range.ts";
 
 /** Middleware options. */
 export interface Options {
-  /** Apply precondition list. */
+  /** Precondition list. */
   readonly preconditions?: Iterable<Precondition>;
 }
 
@@ -58,7 +52,14 @@ export function conditionalRequest(
 ): Middleware {
   // TODO(miyauci): use `toSort`
   const preconditions = Array.from(
-    options?.preconditions ?? DEFAULT_PRECONDITIONS,
+    options?.preconditions ??
+      [
+        new IfMatch(),
+        new IfNoneMatch(),
+        new IfModifiedSince(),
+        new IfUnmodifiedSince(),
+        new IfRange(),
+      ],
   ).sort(ascendPrecondition);
 
   return (request, next) =>
