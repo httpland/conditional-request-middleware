@@ -22,69 +22,267 @@ For a definition of Universal HTTP middleware, see the
 ## Usage
 
 To evaluate precondition, you need to provide a function to retrieve the
-selected representation.
+[selected representation](https://www.rfc-editor.org/rfc/rfc9110#selected.representation).
 
-The following example evaluates the `If-None-Match` precondition and controls
-the handler.
+The following example evaluates the `If-None-Match` precondition and handle
+response.
 
 ```ts
-import { conditionalRequest } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
-import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+import {
+  conditionalRequest,
+  type Handler,
+} from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+import {
+  assertEquals,
+  assertFalse,
+} from "https://deno.land/std/testing/asserts.ts";
 import { assertSpyCalls, spy } from "https://deno.land/std/testing/mock.ts";
 
-const selectedRepresentation = new Response("<body>", {
-  headers: { etag: "<etag>" },
+const selectRepresentation = spy((request: Request) => {
+  return new Response("<body>", { headers: { etag: "<etag>" } });
 });
-const selectRepresentation = spy(() => selectedRepresentation);
 const middleware = conditionalRequest(selectRepresentation);
 const request = new Request("<uri>", {
   headers: { "if-none-match": "<etag>" },
 });
-const handler = spy(() => selectedRepresentation);
+declare const _handler: Handler;
+const handler = spy(_handler);
 
 const response = await middleware(request, handler);
 
 assertSpyCalls(handler, 0);
 assertSpyCalls(selectRepresentation, 1);
 assertEquals(response.status, 304);
+assertFalse(response.body);
 ```
 
-## Preconditions
+## Precondition
 
 [RFC 9110, 13.1. Preconditions](https://www.rfc-editor.org/rfc/rfc9110#section-13.1)
 compliant and supports the following precondition:
 
-- If-Match
-- If-None-Match
-- If-Modified-Since
-- If-Unmodified-Since
-- If-Range
+- [If-Match](#ifmatch)
+- [If-None-Match](#ifnonematch)
+- [If-Modified-Since](#ifmodifiedsince)
+- [If-Unmodified-Since](#ifunmodifiedsince)
+- [If-Range](#ifrange)
 
 If multiple precondition headers are present, precondition is processed
 according to
 [precedence](https://www.rfc-editor.org/rfc/rfc9110.html#section-13.2.2).
 
-## Effects
+### IfMatch
 
-Middleware will effect following:
+`If-Match` header field precondition.
 
+```ts
+import { IfMatch } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+
+const precondition = new IfMatch();
+const request = new Request("<uri>", {
+  headers: { "if-match": "<strong:etag>" },
+});
+const selectedRepresentation = new Response("<content>", {
+  headers: { etag: "<weak:etag>" },
+});
+declare const evalResult: false;
+
+assertEquals(precondition.field, "if-match");
+assertEquals(
+  precondition.evaluate(request, selectedRepresentation),
+  evalResult,
+);
+assertEquals(
+  precondition.respond(request, selectedRepresentation, evalResult)?.status,
+  412,
+);
+```
+
+#### Effects
+
+Precondition will effect following:
+
+If evaluation is `false`:
+
+- HTTP content
+- HTTP response status
+  - [412 (Precondition Failed)](https://www.rfc-editor.org/rfc/rfc9110#section-15.5.13)
+- HTTP headers
+  - [Representation headers](https://www.rfc-editor.org/rfc/rfc9110.html#section-8)
+
+### IfNoneMatch
+
+`If-None-Match` header field precondition.
+
+```ts
+import { IfNoneMatch } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+
+const precondition = new IfNoneMatch();
+const request = new Request("<uri>", {
+  headers: { "if-none-match": "<weak:etag>" },
+});
+const selectedRepresentation = new Response("<content>", {
+  headers: { etag: "<weak:etag>" },
+});
+declare const evalResult: false;
+
+assertEquals(precondition.field, "if-none-match");
+assertEquals(
+  precondition.evaluate(request, selectedRepresentation),
+  evalResult,
+);
+assertEquals(
+  precondition.respond(request, selectedRepresentation, evalResult)?.status,
+  304,
+);
+```
+
+#### Effects
+
+Precondition will effect following:
+
+If evaluation is `false`:
+
+- HTTP content
 - HTTP response status
   - [304 (Not Modified)](https://www.rfc-editor.org/rfc/rfc9110#section-15.4.5)
   - [412 (Precondition Failed)](https://www.rfc-editor.org/rfc/rfc9110#section-15.5.13)
+- HTTP headers
+  - [Representation headers](https://www.rfc-editor.org/rfc/rfc9110.html#section-8)
+
+### IfModifiedSince
+
+`If-Modified-Since` header field precondition.
+
+```ts
+import { IfModifiedSince } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+
+const precondition = new IfModifiedSince();
+const request = new Request("<uri>", {
+  headers: { "if-modified-since": "<after:HTTP-date>" },
+});
+const selectedRepresentation = new Response("<content>", {
+  headers: { "last-modified": "<before:HTTP-date>" },
+});
+declare const evalResult: false;
+
+assertEquals(precondition.field, "if-modified-since");
+assertEquals(
+  precondition.evaluate(request, selectedRepresentation),
+  evalResult,
+);
+assertEquals(
+  precondition.respond(request, selectedRepresentation, evalResult)?.status,
+  304,
+);
+```
+
+#### Effects
+
+Precondition will effect following:
+
+If evaluation is `false`:
+
+- HTTP content
+- HTTP response status
+  - [304 (Not Modified)](https://www.rfc-editor.org/rfc/rfc9110#section-15.4.5)
+- HTTP headers
+  - Content-Type
+  - Content-Encoding
+  - Content-Length
+  - Content-Language
+
+### IfUnmodifiedSince
+
+`If-Unmodified-Since` header field precondition.
+
+```ts
+import { IfUnmodifiedSince } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+
+const precondition = new IfUnmodifiedSince();
+const request = new Request("<uri>", {
+  headers: { "if-unmodified-since": "<before:HTTP-date>" },
+});
+const selectedRepresentation = new Response("<content>", {
+  headers: { "last-modified": "<after:HTTP-date>" },
+});
+declare const evalResult: false;
+
+assertEquals(precondition.field, "if-unmodified-since");
+assertEquals(
+  precondition.evaluate(request, selectedRepresentation),
+  evalResult,
+);
+assertEquals(
+  precondition.respond(request, selectedRepresentation, evalResult)?.status,
+  412,
+);
+```
+
+#### Effects
+
+Precondition will effect following:
+
+If evaluation is `false`:
+
+- HTTP content
+- HTTP response status
+  - [412 (Precondition Failed)](https://www.rfc-editor.org/rfc/rfc9110#section-15.5.13)
+- HTTP headers
+  - [Representation headers](https://www.rfc-editor.org/rfc/rfc9110.html#section-8)
+
+### IfRange
+
+`If-Range` header field precondition.
+
+```ts
+import { IfRange } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+
+const precondition = new IfRange();
+const request = new Request("<uri>", {
+  headers: { "if-range": "<strong:etag>", range: "<range-unit>=<range-set>" },
+});
+const selectedRepresentation = new Response("<content>", {
+  headers: { etag: "<strong:etag>" },
+});
+declare const evalResult: false;
+
+assertEquals(precondition.field, "if-range");
+assertEquals(
+  precondition.evaluate(request, selectedRepresentation),
+  evalResult,
+);
+assertEquals(
+  (await precondition.respond(request, selectedRepresentation, evalResult))
+    ?.status,
+  206,
+);
+```
+
+#### Effects
+
+Precondition will effect following:
+
+If evaluation is `true`:
+
+- HTTP content
+- HTTP response status
+  - [206 (Precondition Failed)](https://www.rfc-editor.org/rfc/rfc9110#section-15.3.7)
+- HTTP headers
+  - Content-Range
 
 ## Conditions
 
 Middleware will execute only if the following conditions are met:
 
-- The precondition header exists
-  - `If-Match`
-    - The `ETag` header exist
-  - `If-None-Match`
-    - The `ETag` header exist
-  - `If-Modified-Since`
-    - The `Last-Modified` header exist
-  - `If-Unmodified-Since`
-    - The `Last-Modified` header exist
+- Request is conditional request
+- Request method is not `CONNECT`, `OPTIONS` or `TRACE`
+- Select representation status is `2xx` or `412`
 
 ## License
 
