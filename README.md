@@ -14,23 +14,12 @@ Compliant with
 [![test](https://github.com/httpland/conditional-request-middleware/actions/workflows/test.yaml/badge.svg)](https://github.com/httpland/conditional-request-middleware/actions/workflows/test.yaml)
 [![NPM](https://nodei.co/npm/@httpland/conditional-request-middleware.png?mini=true)](https://nodei.co/npm/@httpland/conditional-request-middleware/)
 
-## What
-
-Middleware for HTTP Conditional Requests.
-
-It conditionally processes a HTTP request based on a precondition.
-
-It compliant with
-[RFC 9110, 13. Conditional Requests](https://www.rfc-editor.org/rfc/rfc9110#section-13).
-
 ## Middleware
 
 For a definition of Universal HTTP middleware, see the
 [http-middleware](https://github.com/httpland/http-middleware) project.
 
 ## Usage
-
-Middleware factory is exported by default.
 
 To evaluate precondition, you need to provide a function to retrieve the
 selected representation.
