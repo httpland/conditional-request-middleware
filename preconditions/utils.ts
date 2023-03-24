@@ -1,4 +1,11 @@
-import { ETag, parseETag, RepresentationHeader } from "../deps.ts";
+import {
+  ETag,
+  isString,
+  isValidDate,
+  parseETag,
+  parseHttpDate,
+  RepresentationHeader,
+} from "../deps.ts";
 
 /** Match `If-Match` field and `ETag` field.
  * @throws {SyntaxError} If the input is invalid syntax.
@@ -48,15 +55,15 @@ export function ifModifiedSince(
 ): boolean {
   // A recipient MUST ignore the If-Modified-Since header field if the
   // received field-value is not a valid HTTP-date
-  const date = parseHTTPDate(fieldValue.trim());
+  const date = parseHttpDate(fieldValue.trim());
 
-  if (Number.isNaN(date)) {
+  if (!isValidDate(date)) {
     throw TypeError("field value is invalid <HTTP-date> format.");
   }
 
-  const lastMod = parseHTTPDate(lastModified.trim());
+  const lastMod = parseHttpDate(lastModified.trim());
 
-  if (isNaN(lastMod)) {
+  if (!isValidDate(lastMod)) {
     throw TypeError("last-modified is invalid <HTTP-date> format.");
   }
 
@@ -75,15 +82,15 @@ export function ifUnmodifiedSince(
 ): boolean {
   // A recipient MUST ignore the If-Modified-Since header field if the
   // received field-value is not a valid HTTP-date
-  const date = parseHTTPDate(fieldValue.trim());
+  const date = parseHttpDate(fieldValue.trim());
 
-  if (isNaN(date)) {
+  if (!isValidDate(date)) {
     throw TypeError("field value is invalid <HTTP-date> format.");
   }
 
-  const lastMod = parseHTTPDate(lastModified.trim());
+  const lastMod = parseHttpDate(lastModified.trim());
 
-  if (isNaN(lastMod)) {
+  if (!isValidDate(lastMod)) {
     throw TypeError("last-modified is invalid <HTTP-date> format.");
   }
 
@@ -91,6 +98,46 @@ export function ifUnmodifiedSince(
   // if the selected representation's last modification date is more
   // recent than the date provided in the field-value;
   return lastMod <= date;
+}
+
+export interface IfRangeHeaders {
+  readonly etag?: string | null;
+  readonly lastModified?: string | null;
+}
+
+/**
+ * @throws {SyntaxError} If the input is invalid.
+ */
+export function ifRange(fieldValue: string, headers: IfRangeHeaders): boolean {
+  const { etag, lastModified } = headers;
+  if (isMaybeETagFormat(fieldValue)) {
+    if (!isString(etag)) throw Error();
+
+    const left = parseETag(fieldValue);
+    const right = parseETag(etag);
+
+    return matchStrong(left, right);
+  }
+
+  if (!isString(lastModified)) throw Error();
+
+  const left = parseHttpDate(fieldValue);
+
+  if (!isValidDate(left)) {
+    throw TypeError("field value is invalid <HTTP-date> format.");
+  }
+
+  const right = parseHttpDate(lastModified);
+
+  if (!isValidDate(right)) {
+    throw TypeError("last-modified is invalid <HTTP-date> format.");
+  }
+
+  return left.getTime() === right.getTime();
+}
+
+function isMaybeETagFormat(input: string): boolean {
+  return input.slice(0, 3).includes(`"`);
 }
 
 /** Whether the input is `*` or not. */
@@ -122,9 +169,4 @@ export function parse(input: string): IfMatch | IfNoneMatch {
   return input
     .split(",")
     .map(parseETag);
-}
-
-export function parseHTTPDate(input: string): number {
-  // TODO:(miyauci) Compliant with [RFC 9110, 5.6.7. Date/Time Formats](https://www.rfc-editor.org/rfc/rfc9110.html#section-5.6.7)
-  return Date.parse(input);
 }

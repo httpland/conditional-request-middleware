@@ -11,6 +11,8 @@ export {
   isNegativeNumber,
   isNull,
   isNumber,
+  isString,
+  isValidDate,
 } from "https://deno.land/x/isx@1.0.0-beta.24/mod.ts";
 export {
   type Handler,
@@ -20,7 +22,6 @@ export {
   ConditionalHeader,
   filterKeys,
   isRepresentationHeader,
-  parseFieldValue,
   RangeHeader,
   RepresentationHeader,
 } from "https://deno.land/x/http_utils@1.0.0-beta.14/header.ts";
@@ -35,25 +36,15 @@ export {
 } from "https://deno.land/x/etag_parser@1.0.0/mod.ts";
 export { isErr, unsafe } from "https://deno.land/x/result_js@1.0.0/mod.ts";
 export { ascend } from "https://deno.land/std@0.180.0/collections/_comparators.ts";
+export { withContentRange } from "https://deno.land/x/range_request_middleware@1.0.0-beta.1/transform.ts";
+export {
+  BytesRange,
+  type Range,
+} from "https://deno.land/x/range_request_middleware@1.0.0-beta.1/mod.ts";
+export { default as parseHttpDate } from "https://esm.sh/http-dates@1.2.0";
 
 export function not<T extends readonly unknown[]>(
   fn: (...args: T) => boolean,
 ): (...args: T) => boolean {
   return (...args) => !fn(...args);
-}
-
-/**
- * Make an assertion that actual is not null or undefined.
- * If not then throw.
- */
-export function assertExists<T>(
-  actual: T,
-  msg?: string,
-): asserts actual is NonNullable<T> {
-  if (actual === undefined || actual === null) {
-    if (!msg) {
-      msg = `actual: "${actual}" expected to not be null or undefined`;
-    }
-    throw new TypeError(msg);
-  }
 }
