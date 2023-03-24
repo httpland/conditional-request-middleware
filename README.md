@@ -272,9 +272,11 @@ If evaluation is `true`:
 
 - HTTP content
 - HTTP response status
-  - [206 (Precondition Failed)](https://www.rfc-editor.org/rfc/rfc9110#section-15.3.7)
+  - [206 (Partial Content)](https://www.rfc-editor.org/rfc/rfc9110#section-15.3.7)
+  - [416 (Range Not Satisfiable)](https://www.rfc-editor.org/rfc/rfc9110#section-15.5.17)
 - HTTP headers
   - Content-Range
+  - Content-Type
 
 ## Conditions
 
