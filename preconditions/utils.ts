@@ -9,6 +9,7 @@ import {
   parseHttpDate,
   RepresentationHeader,
 } from "../deps.ts";
+import { parse } from "../if_match.ts";
 
 /** Match `If-Match` field and `ETag` field.
  * @throws {SyntaxError} If the input is invalid syntax.
@@ -158,18 +159,3 @@ export function isBannedHeader(fieldName: string): boolean {
 }
 
 export type Star = "*";
-export type IfNoneMatch = Star | ETag[];
-export type IfMatch = IfNoneMatch;
-
-/**
- * @throws {SyntaxError} If the input is invalid.
- */
-export function parse(input: string): IfMatch | IfNoneMatch {
-  input = input.trim();
-
-  if (isStar(input)) return input;
-
-  return input
-    .split(",")
-    .map(parseETag);
-}
