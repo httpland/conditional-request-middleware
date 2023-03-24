@@ -44,7 +44,34 @@ export function evaluateIfRange(
   return result.value;
 }
 
-/** `If-Range` header field precondition. */
+/** `If-Range` header field precondition.
+ *
+ * @example
+ * ```ts
+ * import { IfRange } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+ * import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+ *
+ * const precondition = new IfRange();
+ * const request = new Request("<uri>", {
+ *   headers: { "if-range": "<strong:etag>", range: "<range-unit>=<range-set>" },
+ * });
+ * const selectedRepresentation = new Response("<content>", {
+ *   headers: { etag: "<strong:etag>" },
+ * });
+ * declare const evalResult: false;
+ *
+ * assertEquals(precondition.field, "if-range");
+ * assertEquals(
+ *   precondition.evaluate(request, selectedRepresentation),
+ *   evalResult,
+ * );
+ * assertEquals(
+ *   (await precondition.respond(request, selectedRepresentation, evalResult))
+ *     ?.status,
+ *   206,
+ * );
+ * ```
+ */
 export class IfRange implements Precondition {
   #ranges: Iterable<Range>;
   field = ConditionalHeader.IfRange;

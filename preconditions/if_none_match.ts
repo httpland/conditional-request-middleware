@@ -17,7 +17,33 @@ import type { Precondition } from "../types.ts";
 import { ifNoneMatch } from "./utils.ts";
 import { isBannedHeader } from "../utils.ts";
 
-/** `If-None-Match` header field precondition. */
+/** `If-None-Match` header field precondition.
+ *
+ * @example
+ * ```ts
+ * import { IfNoneMatch } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+ * import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+ *
+ * const precondition = new IfNoneMatch();
+ * const request = new Request("<uri>", {
+ *   headers: { "if-none-match": "<weak:etag>" },
+ * });
+ * const selectedRepresentation = new Response("<content>", {
+ *   headers: { etag: "<weak:etag>" },
+ * });
+ * declare const evalResult: false;
+ *
+ * assertEquals(precondition.field, "if-none-match");
+ * assertEquals(
+ *   precondition.evaluate(request, selectedRepresentation),
+ *   evalResult,
+ * );
+ * assertEquals(
+ *   precondition.respond(request, selectedRepresentation, evalResult)?.status,
+ *   304,
+ * );
+ * ```
+ */
 export class IfNoneMatch implements Precondition {
   field = ConditionalHeader.IfNoneMatch;
 

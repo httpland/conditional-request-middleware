@@ -13,7 +13,33 @@ import {
 import type { Precondition } from "../types.ts";
 import { ifUnmodifiedSince } from "./utils.ts";
 
-/** `If-Unmodified-Since` header field precondition. */
+/** `If-Unmodified-Since` header field precondition.
+ *
+ * @example
+ * ```ts
+ * import { IfUnmodifiedSince } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+ * import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+ *
+ * const precondition = new IfUnmodifiedSince();
+ * const request = new Request("<uri>", {
+ *   headers: { "if-unmodified-since": "<before:HTTP-date>" },
+ * });
+ * const selectedRepresentation = new Response("<content>", {
+ *   headers: { "last-modified": "<after:HTTP-date>" },
+ * });
+ * declare const evalResult: false;
+ *
+ * assertEquals(precondition.field, "if-unmodified-since");
+ * assertEquals(
+ *   precondition.evaluate(request, selectedRepresentation),
+ *   evalResult,
+ * );
+ * assertEquals(
+ *   precondition.respond(request, selectedRepresentation, evalResult)?.status,
+ *   412,
+ * );
+ * ```
+ */
 export class IfUnmodifiedSince implements Precondition {
   field = ConditionalHeader.IfUnmodifiedSince;
 

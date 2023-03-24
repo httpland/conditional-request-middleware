@@ -15,7 +15,33 @@ import {
 import type { Precondition } from "../types.ts";
 import { ifMatch } from "./utils.ts";
 
-/** `If-Match` header field precondition. */
+/** `If-Match` header field precondition.
+ *
+ * @example
+ * ```ts
+ * import { IfMatch } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+ * import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+ *
+ * const precondition = new IfMatch();
+ * const request = new Request("<uri>", {
+ *   headers: { "if-match": "<strong:etag>" },
+ * });
+ * const selectedRepresentation = new Response("<content>", {
+ *   headers: { etag: "<weak:etag>" },
+ * });
+ * declare const evalResult: false;
+ *
+ * assertEquals(precondition.field, "if-match");
+ * assertEquals(
+ *   precondition.evaluate(request, selectedRepresentation),
+ *   evalResult,
+ * );
+ * assertEquals(
+ *   precondition.respond(request, selectedRepresentation, evalResult)?.status,
+ *   412,
+ * );
+ * ```
+ */
 export class IfMatch implements Precondition {
   field = ConditionalHeader.IfMatch;
 
@@ -36,7 +62,7 @@ export class IfMatch implements Precondition {
     _: unknown,
     response: Response,
     result: boolean,
-  ): undefined | Response {
+  ): Response | undefined {
     if (result) return;
 
     const headers = filterKeys(response.headers, not(isRepresentationHeader));

@@ -16,7 +16,33 @@ import { isBannedHeader } from "../utils.ts";
 import { ifModifiedSince } from "./utils.ts";
 import type { Precondition } from "../types.ts";
 
-/** `If-Modified-Since` header field precondition. */
+/** `If-Modified-Since` header field precondition.
+ *
+ * @example
+ * ```ts
+ * import { IfModifiedSince } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+ * import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+ *
+ * const precondition = new IfModifiedSince();
+ * const request = new Request("<uri>", {
+ *   headers: { "if-modified-since": "<after:HTTP-date>" },
+ * });
+ * const selectedRepresentation = new Response("<content>", {
+ *   headers: { "last-modified": "<before:HTTP-date>" },
+ * });
+ * declare const evalResult: false;
+ *
+ * assertEquals(precondition.field, "if-modified-since");
+ * assertEquals(
+ *   precondition.evaluate(request, selectedRepresentation),
+ *   evalResult,
+ * );
+ * assertEquals(
+ *   precondition.respond(request, selectedRepresentation, evalResult)?.status,
+ *   304,
+ * );
+ * ```
+ */
 export class IfModifiedSince implements Precondition {
   field = ConditionalHeader.IfModifiedSince;
 
