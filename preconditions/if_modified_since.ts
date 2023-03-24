@@ -12,7 +12,8 @@ import {
   Status,
   unsafe,
 } from "../deps.ts";
-import { ifModifiedSince, isBannedHeader } from "./utils.ts";
+import { isBannedHeader } from "../utils.ts";
+import { ifModifiedSince } from "./utils.ts";
 import type { Precondition } from "../types.ts";
 
 /** `If-Modified-Since` header field precondition. */

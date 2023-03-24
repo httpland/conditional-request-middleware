@@ -8,6 +8,7 @@ import {
   isNull,
   isSuccessfulStatus,
   Method,
+  RepresentationHeader,
   Status,
   SuccessfulStatus,
 } from "./deps.ts";
@@ -78,4 +79,13 @@ export async function applyPrecondition(
   if (!isBoolean(evalResult)) return;
 
   return precondition.respond(request, response, evalResult);
+}
+
+export function isBannedHeader(fieldName: string): boolean {
+  return ([
+    RepresentationHeader.ContentEncoding,
+    RepresentationHeader.ContentLanguage,
+    RepresentationHeader.ContentLength,
+    RepresentationHeader.ContentType,
+  ] as string[]).includes(fieldName);
 }

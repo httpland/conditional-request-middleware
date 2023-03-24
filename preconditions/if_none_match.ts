@@ -14,7 +14,8 @@ import {
   unsafe,
 } from "../deps.ts";
 import type { Precondition } from "../types.ts";
-import { ifNoneMatch, isBannedHeader } from "./utils.ts";
+import { ifNoneMatch } from "./utils.ts";
+import { isBannedHeader } from "../utils.ts";
 
 /** `If-None-Match` header field precondition. */
 export class IfNoneMatch implements Precondition {
