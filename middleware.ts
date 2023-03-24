@@ -25,7 +25,7 @@ export interface Options {
  *
  * @example
  * ```ts
- * import { conditionalRequest } from "https://deno.land/x/http_conditional_requests@$VERSION/mod.ts";
+ * import { conditionalRequest } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
  * import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
  * import { assertSpyCalls, spy } from "https://deno.land/std/testing/mock.ts";
  *
