@@ -7,5 +7,13 @@ export { IfMatch } from "./preconditions/if_match.ts";
 export { IfModifiedSince } from "./preconditions/if_modified_since.ts";
 export { IfUnmodifiedSince } from "./preconditions/if_unmodified_since.ts";
 export { IfRange } from "./preconditions/if_range.ts";
-export { type Handler, type Middleware } from "./deps.ts";
+export {
+  type BytesContext,
+  BytesRange,
+  type ComputeBoundary,
+  type Handler,
+  type Middleware,
+  type Range,
+  type RangesSpecifier,
+} from "./deps.ts";
 export { type Precondition } from "./types.ts";
