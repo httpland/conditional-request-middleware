@@ -18,7 +18,15 @@ import { IfRange } from "./preconditions/if_range.ts";
 
 /** Middleware options. */
 export interface Options {
-  /** Precondition list. */
+  /** Precondition list.
+   *
+   * Default preconditions are as follows:
+   * - {@link IfMatch}
+   * - {@link IfNoneMatch}
+   * - {@link IfModifiedSince}
+   * - {@link IfUnmodifiedSince}
+   * - {@link IfRange}
+   */
   readonly preconditions?: Iterable<Precondition>;
 }
 

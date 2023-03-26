@@ -64,7 +64,7 @@ representation.
 
 You must provide a function to retrieve the representation.
 
-Select representation is the following interface:
+Selecting representation is the following interface:
 
 ```ts
 interface SelectRepresentation {
@@ -72,21 +72,113 @@ interface SelectRepresentation {
 }
 ```
 
-The select representation is executed prior to the handler when a request with a
-precondition header is received.
+It is executed prior to the handler when a request with a precondition header is
+received.
 
-The select representation removes the pre-conditional header from the actual
-request header in order to satisfy the following requirement.
+The `Request` object passed to select representation has fileted the conditional
+header.
+
+It satisfies the following requirement.
 
 > A server MUST ignore all received preconditions if its response to the same
 > request without those conditions, prior to processing the request content,
 > would have been a status code other than a 2xx (Successful) or 412
 > (Precondition Failed).
 
+## Preconditions
+
+Middleware supports all preconditions compliant with
+[RFC 9110, 13.1. Preconditions](https://www.rfc-editor.org/rfc/rfc9110#section-13.1)
+by default.
+
+If you want to adapt only some of the preconditions, give a list of them.
+
+Example of middleware that handles only `If-None-Match` and `If-Modified-Since`
+headers:
+
+```ts
+import {
+  conditionalRequest,
+  type Handler,
+  IfModifiedSince,
+  IfNoneMatch,
+} from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+
+declare const selectRepresentation: Handler;
+
+const middleware = conditionalRequest(selectRepresentation, {
+  preconditions: [new IfNoneMatch(), new IfModifiedSince()],
+});
+```
+
+Don't worry about the order of preconditions. They will be sorted appropriately
+based on the
+[13.2.2. Precedence of Preconditions](https://www.rfc-editor.org/rfc/rfc9110.html#section-13.2.2).
+
+### Middleware default
+
+The Middleware factory default values are as follows:
+
+```ts
+import {
+  BytesRange,
+  conditionalRequest,
+  type Handler,
+  IfMatch,
+  IfModifiedSince,
+  IfNoneMatch,
+  IfRange,
+  IfUnmodifiedSince,
+} from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+
+declare const selectRepresentation: Handler;
+const DEFAULT_PRECONDITIONS = [
+  new IfMatch(),
+  new IfNoneMatch(),
+  new IfModifiedSince(),
+  new IfUnmodifiedSince(),
+  new IfRange([new BytesRange()]),
+];
+
+const middleware = conditionalRequest(selectRepresentation, {
+  preconditions: DEFAULT_PRECONDITIONS,
+});
+```
+
 ## Precondition
 
+`Precondition` is following structured object.
+
+```ts
+/** Precondition API. */
+export interface Precondition {
+  /** Precondition header field name. */
+  readonly field: string;
+
+  /** Definition of precondition evaluation.
+   * If return value is void, it represents ignore this precondition.
+   */
+  evaluate(
+    request: Request,
+    selectedRepresentation: Response,
+  ): boolean | void | Promise<boolean | void>;
+
+  /** Called after {@link Precondition.evaluate}.
+   * If return response, it must not perform the requested method.
+   * If return value is void, it represents ignore this precondition.
+   */
+  respond(
+    request: Request,
+    selectedRepresentation: Response,
+    result: boolean,
+  ): Response | void | Promise<Response | void>;
+}
+```
+
+`Precondition` abstracts the evaluation of a precondition and its response.
+
+Provide all preconditions compliant with
 [RFC 9110, 13.1. Preconditions](https://www.rfc-editor.org/rfc/rfc9110#section-13.1)
-compliant and supports the following precondition:
 
 - [If-Match](#ifmatch)
 - [If-None-Match](#ifnonematch)
@@ -94,9 +186,8 @@ compliant and supports the following precondition:
 - [If-Unmodified-Since](#ifunmodifiedsince)
 - [If-Range](#ifrange)
 
-If multiple precondition headers are present, precondition is processed
-according to
-[precedence](https://www.rfc-editor.org/rfc/rfc9110.html#section-13.2.2).
+If you implement a `Precondition` that is not in the specification, make sure
+[extensibility of preconditions](https://www.rfc-editor.org/rfc/rfc9110.html#section-13.1-3).
 
 ### IfMatch
 
