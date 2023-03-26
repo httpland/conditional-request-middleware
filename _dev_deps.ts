@@ -12,6 +12,7 @@ export {
   spy,
 } from "https://deno.land/std@0.180.0/testing/mock.ts";
 export { equalsResponse } from "https://deno.land/x/http_utils@1.0.0-beta.13/response.ts";
+export { equalsRequest } from "https://deno.land/x/http_utils@1.0.0-beta.13/request.ts";
 export {
   ConditionalHeader,
   RangeHeader,

@@ -21,7 +21,8 @@ For a definition of Universal HTTP middleware, see the
 
 ## Usage
 
-To evaluate precondition, you need to provide a function to retrieve the
+To evaluate precondition, you need to provide
+[select representation](#select-representation) function to retrieve the
 [selected representation](https://www.rfc-editor.org/rfc/rfc9110#selected.representation).
 
 The following example evaluates the `If-None-Match` precondition and handle
@@ -55,6 +56,32 @@ assertSpyCalls(selectRepresentation, 1);
 assertEquals(response.status, 304);
 assertFalse(response.body);
 ```
+
+## Select representation
+
+The evaluation of the pre-conditions is always done on the selected
+representation.
+
+You must provide a function to retrieve the representation.
+
+Select representation is the following interface:
+
+```ts
+interface SelectRepresentation {
+  (request: Request): Response | Promise<Response>;
+}
+```
+
+The select representation is executed prior to the handler when a request with a
+precondition header is received.
+
+The select representation removes the pre-conditional header from the actual
+request header in order to satisfy the following requirement.
+
+> A server MUST ignore all received preconditions if its response to the same
+> request without those conditions, prior to processing the request content,
+> would have been a status code other than a 2xx (Successful) or 412
+> (Precondition Failed).
 
 ## Precondition
 

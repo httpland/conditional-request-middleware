@@ -8,6 +8,7 @@ import {
   ascendPrecondition,
   isNotSelectionOrModificationMethod,
   isPreEvaluableStatus,
+  withoutConditionHeaders,
 } from "./utils.ts";
 import { IfNoneMatch } from "./preconditions/if_none_match.ts";
 import { IfMatch } from "./preconditions/if_match.ts";
@@ -62,8 +63,9 @@ export function conditionalRequest(
       ],
   ).sort(ascendPrecondition);
 
-  return (request, next) =>
-    _handler(selectRepresentation, preconditions, request, next);
+  const curried = _handler.bind(null, selectRepresentation, preconditions);
+
+  return curried;
 }
 
 /** Handle preconditions with all contexts.
@@ -88,7 +90,14 @@ export async function _handler(
 
   if (!targetPreconditions.length) return next(request);
 
-  const selectedRepresentation = await selectRepresentation(request);
+  const headers = withoutConditionHeaders(
+    request.headers,
+    preconditions.map(({ field }) => field),
+  );
+
+  const selectedRepresentation = await selectRepresentation(
+    new Request(request, { headers }),
+  );
 
   /** A server MUST ignore all received preconditions if its response to the same request without those conditions, prior to processing the request content, would have been a status code other than a 2xx (Successful) or 412 (Precondition Failed).
    */

@@ -4,6 +4,7 @@ import {
   assertSpyCalls,
   ConditionalHeader,
   describe,
+  equalsRequest,
   equalsResponse,
   it,
   Method,
@@ -56,8 +57,12 @@ describe("_handler", () => {
   });
 
   it("should call next handler if the selected response has not pre-evaluable status", async () => {
-    const request = new Request("test:", { headers: { "test": "" } });
-    const select = spy(() => new Response(null, { status: Status.NotFound }));
+    const initRequest = new Request("test:", { headers: { "test": "" } });
+    const select = spy(async (request: Request) => {
+      assert(await equalsRequest(request, new Request("test:")));
+
+      return new Response(null, { status: Status.NotFound });
+    });
     const initResponse = new Response();
     const next = spy(() => initResponse);
     const evaluate = spy(() => true);
@@ -66,14 +71,60 @@ describe("_handler", () => {
     const response = await _handler(
       select,
       [{ field: "test", evaluate, respond }],
-      request,
+      initRequest,
       next,
     );
 
     assertSpyCalls(evaluate, 0);
     assertSpyCalls(respond, 0);
     assertSpyCalls(select, 1);
-    assertSpyCallArg(select, 0, 0, request);
+    assertSpyCalls(next, 1);
+    assert(initResponse === response);
+  });
+
+  it("should request what does not include precondition headers and custom precondition headers", async () => {
+    const initRequest = new Request("test:", {
+      headers: {
+        [ConditionalHeader.IfNoneMatch]: "",
+        [ConditionalHeader.IfMatch]: "",
+        [ConditionalHeader.IfModifiedSince]: "",
+        [ConditionalHeader.IfRange]: "",
+        [ConditionalHeader.IfUnmodifiedSince]: "",
+        "x-precondition": "",
+        "x-test": "",
+      },
+    });
+    const select = spy(async (request: Request) => {
+      assert(
+        await equalsRequest(
+          request,
+          new Request("test:", {
+            headers: {
+              "x-test": "",
+            },
+          }),
+        ),
+      );
+
+      return new Response(null, { status: Status.NotFound });
+    });
+    const initResponse = new Response();
+    const next = spy(() => initResponse);
+    const evaluate = spy(() => true);
+    const respond = spy(() => {});
+
+    const response = await _handler(
+      select,
+      [{ field: ConditionalHeader.IfNoneMatch, evaluate, respond }, {
+        field: "X-Precondition",
+        evaluate,
+        respond,
+      }],
+      initRequest,
+      next,
+    );
+
+    assertSpyCalls(select, 1);
     assertSpyCalls(next, 1);
     assert(initResponse === response);
   });

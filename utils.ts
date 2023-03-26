@@ -3,11 +3,15 @@
 
 import {
   ascend,
+  distinct,
+  filterKeys,
   isBoolean,
+  isConditionalHeader,
   isNegativeNumber,
   isNull,
   isSuccessfulStatus,
   Method,
+  not,
   RepresentationHeader,
   Status,
   SuccessfulStatus,
@@ -88,4 +92,22 @@ export function isBannedHeader(fieldName: string): boolean {
     RepresentationHeader.ContentLength,
     RepresentationHeader.ContentType,
   ] as string[]).includes(fieldName);
+}
+
+/** Return no precondition header. */
+export function withoutConditionHeaders(
+  headers: Headers,
+  additionalConditionHeaders: readonly string[] = [],
+): Headers {
+  additionalConditionHeaders = distinct(additionalConditionHeaders)
+    .map((v) => v.toLowerCase());
+
+  function isBannedHeader(key: string): boolean {
+    return isConditionalHeader(key) ||
+      additionalConditionHeaders.includes(key);
+  }
+
+  const newHeaders = filterKeys(headers, not(isBannedHeader));
+
+  return newHeaders;
 }

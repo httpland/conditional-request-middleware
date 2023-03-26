@@ -6,6 +6,7 @@ export {
   Status,
   type SuccessfulStatus,
 } from "https://deno.land/std@0.180.0/http/http_status.ts";
+export { distinct } from "https://deno.land/std@0.181.0/collections/distinct.ts";
 export {
   isBoolean,
   isNegativeNumber,
@@ -21,6 +22,7 @@ export {
 export {
   ConditionalHeader,
   filterKeys,
+  isConditionalHeader,
   isRepresentationHeader,
   RangeHeader,
   RepresentationHeader,
@@ -36,11 +38,11 @@ export {
 } from "https://deno.land/x/etag_parser@1.0.0/mod.ts";
 export { isErr, unsafe } from "https://deno.land/x/result_js@1.0.0/mod.ts";
 export { ascend } from "https://deno.land/std@0.180.0/collections/_comparators.ts";
-export { withContentRange } from "https://deno.land/x/range_request_middleware@1.0.0-beta.1/transform.ts";
+export { withContentRange } from "https://deno.land/x/range_request_middleware@1.0.0/transform.ts";
 export {
   BytesRange,
   type Range,
-} from "https://deno.land/x/range_request_middleware@1.0.0-beta.1/mod.ts";
+} from "https://deno.land/x/range_request_middleware@1.0.0/mod.ts";
 export { default as parseHttpDate } from "https://esm.sh/http-dates@1.2.0";
 
 export function not<T extends readonly unknown[]>(

@@ -3,6 +3,7 @@ import {
   ascendPreconditionHeader,
   type Ord,
   toPriority,
+  withoutConditionHeaders,
 } from "./utils.ts";
 import {
   assert,
@@ -148,5 +149,43 @@ describe("applyPrecondition", () => {
     assertSpyCalls(evaluate, 1);
     assertSpyCalls(respond, 1);
     assert(newResponse === result);
+  });
+});
+
+describe("withoutConditionHeaders", () => {
+  it("should return headers what does not include precondition header", () => {
+    assertEquals(withoutConditionHeaders(new Headers()), new Headers());
+    assertEquals(
+      withoutConditionHeaders(
+        new Headers({
+          [ConditionalHeader.IfMatch]: "",
+          [ConditionalHeader.IfModifiedSince]: "",
+          [ConditionalHeader.IfNoneMatch]: "",
+          [ConditionalHeader.IfRange]: "",
+          [ConditionalHeader.IfUnmodifiedSince]: "",
+          "x-x": "",
+        }),
+      ),
+      new Headers({ "x-x": "" }),
+    );
+  });
+
+  it("should add additional conditional headers", () => {
+    assertEquals(
+      withoutConditionHeaders(
+        new Headers({
+          [ConditionalHeader.IfMatch]: "",
+          [ConditionalHeader.IfModifiedSince]: "",
+          [ConditionalHeader.IfNoneMatch]: "",
+          [ConditionalHeader.IfRange]: "",
+          [ConditionalHeader.IfUnmodifiedSince]: "",
+          "x-x": "",
+          "x-test": "",
+          "x-precondition": "",
+        }),
+        ["x-precondition", "x-test", ConditionalHeader.IfMatch],
+      ),
+      new Headers({ "x-x": "" }),
+    );
   });
 });
