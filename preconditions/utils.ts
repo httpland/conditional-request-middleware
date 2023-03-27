@@ -1,9 +1,15 @@
 // Copyright 2023-latest the httpland authors. All rights reserved. MIT license.
 // This module is browser compatible.
 
-import { isString, isValidDate, parseETag, parseHttpDate } from "../deps.ts";
+import {
+  compareStrong,
+  compareWeak,
+  isString,
+  isValidDate,
+  parseETag,
+  parseHttpDate,
+} from "../deps.ts";
 import { parse } from "../if_match.ts";
-import { matchStrong, matchWeak } from "../etag.ts";
 
 const enum Msg {
   InvalidField = "field value is invalid <HTTP-date> format.",
@@ -22,7 +28,7 @@ export function ifMatch(
 
   if (isStar(ifMatch)) return true;
 
-  return ifMatch.some((etag) => matchStrong(etag, etagObj));
+  return ifMatch.some((etag) => compareStrong(etag, etagObj));
 }
 
 /** Match `If-None-Match` field and `ETag` field.
@@ -34,7 +40,7 @@ export function ifNoneMatch(fieldValue: string, etag: string): boolean {
 
   if (isStar(ifNoneMatch)) return false;
 
-  return ifNoneMatch.every((tag) => !matchWeak(tag, etagObj));
+  return ifNoneMatch.every((tag) => !compareWeak(tag, etagObj));
 }
 
 /**
@@ -103,7 +109,7 @@ export function ifRange(fieldValue: string, headers: IfRangeHeaders): boolean {
     const left = parseETag(fieldValue);
     const right = parseETag(etag);
 
-    return matchStrong(left, right);
+    return compareStrong(left, right);
   }
 
   if (!isString(lastModified)) throw Error();

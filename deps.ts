@@ -30,10 +30,12 @@ export {
   Method,
 } from "https://deno.land/x/http_utils@1.0.0-beta.14/method.ts";
 export {
+  compareStrong,
+  compareWeak,
   type ETag,
   type ETagFormat,
-  parse as parseETag,
-} from "https://deno.land/x/etag_parser@1.0.0/mod.ts";
+  parseETag,
+} from "https://deno.land/x/etag_parser@1.1.0/mod.ts";
 export { isErr, unsafe } from "https://deno.land/x/result_js@1.0.0/mod.ts";
 export { ascend } from "https://deno.land/std@0.181.0/collections/_comparators.ts";
 export { withContentRange } from "https://deno.land/x/range_request_middleware@1.0.0/transform.ts";
