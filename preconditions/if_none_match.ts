@@ -21,7 +21,7 @@ import { isBannedHeader } from "../utils.ts";
  *
  * @example
  * ```ts
- * import { IfNoneMatch } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+ * import { IfNoneMatch } from "https://deno.land/x/conditional_request_middleware@$VERSION/preconditions/if_none_match.ts";
  * import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
  *
  * const precondition = new IfNoneMatch();

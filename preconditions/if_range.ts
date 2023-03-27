@@ -56,7 +56,7 @@ export function evaluateIfRange(
  *
  * @example
  * ```ts
- * import { IfRange } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+ * import { IfRange } from "https://deno.land/x/conditional_request_middleware@$VERSION/preconditions/if_range.ts";
  * import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
  *
  * const precondition = new IfRange();

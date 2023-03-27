@@ -194,7 +194,7 @@ If you implement a `Precondition` that is not in the specification, make sure
 `If-Match` header field precondition.
 
 ```ts
-import { IfMatch } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+import { IfMatch } from "https://deno.land/x/conditional_request_middleware@$VERSION/preconditions/if_match.ts";
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
 
 const precondition = new IfMatch();
@@ -234,7 +234,7 @@ If evaluation is `false`:
 `If-None-Match` header field precondition.
 
 ```ts
-import { IfNoneMatch } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+import { IfNoneMatch } from "https://deno.land/x/conditional_request_middleware@$VERSION/preconditions/if_none_match.ts";
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
 
 const precondition = new IfNoneMatch();
@@ -275,7 +275,7 @@ If evaluation is `false`:
 `If-Modified-Since` header field precondition.
 
 ```ts
-import { IfModifiedSince } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+import { IfModifiedSince } from "https://deno.land/x/conditional_request_middleware@$VERSION/preconditions/if_modified_since.ts";
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
 
 const precondition = new IfModifiedSince();
@@ -318,7 +318,7 @@ If evaluation is `false`:
 `If-Unmodified-Since` header field precondition.
 
 ```ts
-import { IfUnmodifiedSince } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+import { IfUnmodifiedSince } from "https://deno.land/x/conditional_request_middleware@$VERSION/preconditions/if_unmodified_since.ts";
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
 
 const precondition = new IfUnmodifiedSince();
@@ -358,7 +358,7 @@ If evaluation is `false`:
 `If-Range` header field precondition.
 
 ```ts
-import { IfRange } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+import { IfRange } from "https://deno.land/x/conditional_request_middleware@$VERSION/preconditions/if_range.ts";
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
 
 const precondition = new IfRange();

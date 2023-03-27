@@ -20,7 +20,7 @@ import type { Precondition } from "../types.ts";
  *
  * @example
  * ```ts
- * import { IfModifiedSince } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+ * import { IfModifiedSince } from "https://deno.land/x/conditional_request_middleware@$VERSION/preconditions/if_modified_since.ts";
  * import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
  *
  * const precondition = new IfModifiedSince();

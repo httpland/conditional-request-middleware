@@ -34,25 +34,32 @@ export interface Options {
  *
  * @example
  * ```ts
- * import { conditionalRequest } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
- * import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+ * import {
+ *   conditionalRequest,
+ *   type Handler,
+ * } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+ * import {
+ *   assertEquals,
+ *   assertFalse,
+ * } from "https://deno.land/std/testing/asserts.ts";
  * import { assertSpyCalls, spy } from "https://deno.land/std/testing/mock.ts";
  *
- * const selectedRepresentation = new Response("<body>", {
- *   headers: { etag: "<etag>" },
+ * const selectRepresentation = spy((request: Request) => {
+ *   return new Response("<body>", { headers: { etag: "<etag>" } });
  * });
- * const selectRepresentation = spy(() => selectedRepresentation);
  * const middleware = conditionalRequest(selectRepresentation);
  * const request = new Request("<uri>", {
  *   headers: { "if-none-match": "<etag>" },
  * });
- * const handler = spy(() => selectedRepresentation);
+ * declare const _handler: Handler;
+ * const handler = spy(_handler);
  *
  * const response = await middleware(request, handler);
  *
  * assertSpyCalls(handler, 0);
  * assertSpyCalls(selectRepresentation, 1);
  * assertEquals(response.status, 304);
+ * assertFalse(response.body);
  * ```
  */
 export function conditionalRequest(

@@ -17,7 +17,7 @@ import { ifUnmodifiedSince } from "./utils.ts";
  *
  * @example
  * ```ts
- * import { IfUnmodifiedSince } from "https://deno.land/x/conditional_request_middleware@$VERSION/mod.ts";
+ * import { IfUnmodifiedSince } from "https://deno.land/x/conditional_request_middleware@$VERSION/preconditions/if_unmodified_since.ts";
  * import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
  *
  * const precondition = new IfUnmodifiedSince();
@@ -49,8 +49,7 @@ export class IfUnmodifiedSince implements Precondition {
       RepresentationHeader.LastModified,
     );
 
-    // A recipient MUST ignore If-Unmodified-Since if the request contains
-    // an If-Match header field
+    // A recipient MUST ignore If-Unmodified-Since if the request contains an If-Match header field
     if (
       request.headers.has(ConditionalHeader.IfMatch) ||
       isNull(fieldValue) ||
