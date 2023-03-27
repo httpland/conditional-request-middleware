@@ -59,7 +59,7 @@ export function conditionalRequest(
   selectRepresentation: Handler,
   options?: Options,
 ): Middleware {
-  // TODO(miyauci): use `toSort`
+  // TODO(miyauci): use `toSort` someday
   const preconditions = Array.from(
     options?.preconditions ??
       [
@@ -107,8 +107,7 @@ export async function _handler(
     new Request(request, { headers }),
   );
 
-  /** A server MUST ignore all received preconditions if its response to the same request without those conditions, prior to processing the request content, would have been a status code other than a 2xx (Successful) or 412 (Precondition Failed).
-   */
+  // A server MUST ignore all received preconditions if its response to the same request without those conditions, prior to processing the request content, would have been a status code other than a 2xx (Successful) or 412 (Precondition Failed).
   if (!isPreEvaluableStatus(selectedRepresentation.status)) {
     return next(request);
   }
