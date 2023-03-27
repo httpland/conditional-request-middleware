@@ -1,10 +1,5 @@
 # conditional-request-middleware
 
-HTTP conditional request middleware.
-
-Compliant with
-[RFC 9110, 13. Conditional Requests](https://www.rfc-editor.org/rfc/rfc9110#section-13)
-
 [![deno land](http://img.shields.io/badge/available%20on-deno.land/x-lightgrey.svg?logo=deno)](https://deno.land/x/conditional_request_middleware)
 [![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/deno.land/x/conditional_request_middleware/mod.ts)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/httpland/conditional-request-middleware)](https://github.com/httpland/conditional-request-middleware/releases)
@@ -13,6 +8,11 @@ Compliant with
 
 [![test](https://github.com/httpland/conditional-request-middleware/actions/workflows/test.yaml/badge.svg)](https://github.com/httpland/conditional-request-middleware/actions/workflows/test.yaml)
 [![NPM](https://nodei.co/npm/@httpland/conditional-request-middleware.png?mini=true)](https://nodei.co/npm/@httpland/conditional-request-middleware/)
+
+HTTP conditional request middleware.
+
+Compliant with
+[RFC 9110, 13. Conditional Requests](https://www.rfc-editor.org/rfc/rfc9110#section-13)
 
 ## Middleware
 
