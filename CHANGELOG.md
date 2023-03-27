@@ -1,3 +1,11 @@
+# [1.0.0-beta.2](https://github.com/httpland/conditional-request-middleware/compare/1.0.0-beta.1...1.0.0-beta.2) (2023-03-27)
+
+
+### Features
+
+* **middleware:** filter conditional headers if selecting representation ([8f37b6b](https://github.com/httpland/conditional-request-middleware/commit/8f37b6b973093f98ded5ac48f7298c011d224f9c))
+* **preconditions:** add checking accept-ranges header before evaluate if-ranges header ([13eb7cd](https://github.com/httpland/conditional-request-middleware/commit/13eb7cd8187dbcf241faf84eacde30494cee3403))
+
 # 1.0.0-beta.1 (2023-03-24)
 
 
