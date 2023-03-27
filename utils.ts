@@ -12,9 +12,11 @@ import {
   isSuccessfulStatus,
   Method,
   not,
+  parseAcceptRanges,
   RepresentationHeader,
   Status,
   SuccessfulStatus,
+  type Token,
 } from "./deps.ts";
 import type { Precondition } from "./types.ts";
 
@@ -110,4 +112,15 @@ export function withoutConditionHeaders(
   const newHeaders = filterKeys(headers, not(isBannedHeader));
 
   return newHeaders;
+}
+
+/** Whether the input has {@link Token} or not.
+ * If the input is invalid [`Accept-Ranges`](https://www.rfc-editor.org/rfc/rfc9110.html#section-14.3-2) then `false`.
+ */
+export function hasToken(input: string, token: Token): boolean {
+  try {
+    return parseAcceptRanges(input).includes(token);
+  } catch {
+    return false;
+  }
 }

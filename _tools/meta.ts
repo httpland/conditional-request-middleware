@@ -86,16 +86,16 @@ export const makeOptions = (version: string): BuildOptions => ({
       name: "@httpland/http-utils",
       version: "1.0.0-beta.14",
     },
-    "https://deno.land/x/etag_parser@1.0.0/mod.ts": {
-      name: "@httpland/etag-parser",
-      version: "1.0.0",
-    },
     "https://deno.land/x/result_js@1.0.0/mod.ts": {
       name: "@miyauci/result",
       version: "1.0.0",
     },
     "https://deno.land/x/range_request_middleware@1.0.0/mod.ts": {
       name: "@httpland/range-request-middleware",
+      version: "1.0.0",
+    },
+    "https://deno.land/x/accept_ranges_parser@1.0.0/mod.ts": {
+      name: "@httpland/accept-ranges-parser",
       version: "1.0.0",
     },
   },

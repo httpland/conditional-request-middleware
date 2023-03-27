@@ -6,6 +6,7 @@ import {
   ConditionalHeader,
   isErr,
   isNull,
+  isString,
   Method,
   type Range,
   RangeHeader,
@@ -15,6 +16,11 @@ import {
 } from "../deps.ts";
 import { Precondition } from "../types.ts";
 import { ifRange } from "./utils.ts";
+import { hasToken } from "../utils.ts";
+
+const enum RangeUnit {
+  None = "none",
+}
 
 export function evaluateIfRange(
   request: Request,
@@ -29,15 +35,17 @@ export function evaluateIfRange(
     !request.headers.has(RangeHeader.Range)
   ) return;
 
-  /** An origin server MUST ignore an If-Range header field received in a request for a target resource that does not support Range requests. */
-  // TODO:(miyauci) Check accept-ranges is none or not.
+  const acceptRanges = response.headers.get(RangeHeader.AcceptRanges);
 
-  const v = {
+  /** An origin server MUST ignore an If-Range header field received in a request for a target resource that does not support Range requests. */
+  if (isString(acceptRanges) && hasToken(acceptRanges, RangeUnit.None)) return;
+
+  const headers = {
     etag: response.headers.get(RepresentationHeader.ETag),
     lastModified: response.headers.get(RepresentationHeader.LastModified),
   };
 
-  const result = unsafe(() => ifRange(ifRangeValue, v));
+  const result = unsafe(() => ifRange(ifRangeValue, headers));
 
   if (isErr(result)) return;
 

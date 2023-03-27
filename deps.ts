@@ -47,6 +47,10 @@ export {
   type RangesSpecifier,
 } from "https://deno.land/x/range_request_middleware@1.0.0/mod.ts";
 export { default as parseHttpDate } from "https://esm.sh/http-dates@1.2.0";
+export {
+  parseAcceptRanges,
+  type Token,
+} from "https://deno.land/x/accept_ranges_parser@1.0.0/mod.ts";
 
 export function not<T extends readonly unknown[]>(
   fn: (...args: T) => boolean,

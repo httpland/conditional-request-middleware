@@ -72,6 +72,25 @@ describe("evaluateIfRange", () => {
     });
   });
 
+  it("should return undefined if the response has accept-ranges and include none", () => {
+    assertEquals(
+      evaluateIfRange(
+        new Request("test:", {
+          headers: {
+            [ConditionalHeader.IfRange]: `""`,
+            [RangeHeader.Range]: "",
+          },
+        }),
+        new Response(null, {
+          headers: {
+            [RangeHeader.AcceptRanges]: "unknown, none",
+          },
+        }),
+      ),
+      undefined,
+    );
+  });
+
   it("should return false if the etag does not match strong", () => {
     const table: [Request, Response][] = [
       [
