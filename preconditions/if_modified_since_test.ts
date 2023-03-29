@@ -78,10 +78,11 @@ describe("IfModifiedSince", () => {
           }),
         ],
         [
-          new Request("test:"),
+          new Request("test:", {
+            headers: { [ConditionalHeader.IfModifiedSince]: "" },
+          }),
           new Response(null, {
             headers: {
-              [ConditionalHeader.IfModifiedSince]: "",
               [RepresentationHeader.LastModified]: "",
             },
           }),

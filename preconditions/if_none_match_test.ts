@@ -31,10 +31,11 @@ describe("IfNoneMatch", () => {
           new Response(null, { headers: { [RepresentationHeader.ETag]: "" } }),
         ],
         [
-          new Request("test:"),
+          new Request("test:", {
+            headers: { [ConditionalHeader.IfNoneMatch]: "" },
+          }),
           new Response(null, {
             headers: {
-              [ConditionalHeader.IfNoneMatch]: "",
               [RepresentationHeader.ETag]: "",
             },
           }),
