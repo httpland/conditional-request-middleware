@@ -43,7 +43,7 @@ export function ifNoneMatch(fieldValue: string, etag: string): boolean {
   return ifNoneMatch.every((tag) => !compareWeak(tag, etagObj));
 }
 
-/**
+/** Match `If-Modified-Since` field and `Last-Modified` field.
  * @throws {SyntaxError} If the input is invalid.
  */
 export function ifModifiedSince(
@@ -53,13 +53,13 @@ export function ifModifiedSince(
   const date = parseHttpDate(fieldValue.trim());
 
   if (!isValidDate(date)) {
-    throw TypeError(Msg.InvalidField);
+    throw SyntaxError(Msg.InvalidField);
   }
 
   const lastMod = parseHttpDate(lastModified.trim());
 
   if (!isValidDate(lastMod)) {
-    throw TypeError(Msg.InvalidLastModified);
+    throw SyntaxError(Msg.InvalidLastModified);
   }
 
   // The origin server SHOULD NOT perform the requested
@@ -68,7 +68,7 @@ export function ifModifiedSince(
   return lastMod > date;
 }
 
-/**
+/** Match `If-Unmodified-Since` field and `Last-Modified` field.
  * @throws {SyntaxError} If the input is invalid.
  */
 export function ifUnmodifiedSince(
@@ -78,13 +78,13 @@ export function ifUnmodifiedSince(
   const date = parseHttpDate(fieldValue.trim());
 
   if (!isValidDate(date)) {
-    throw TypeError(Msg.InvalidField);
+    throw SyntaxError(Msg.InvalidField);
   }
 
   const lastMod = parseHttpDate(lastModified.trim());
 
   if (!isValidDate(lastMod)) {
-    throw TypeError(Msg.InvalidLastModified);
+    throw SyntaxError(Msg.InvalidLastModified);
   }
 
   // The origin server MUST NOT perform the requested method
@@ -98,7 +98,7 @@ export interface IfRangeHeaders {
   readonly lastModified?: string | null;
 }
 
-/**
+/** Match `If-Range` field `ETag` and `Last-Modified` field.
  * @throws {SyntaxError} If the input is invalid.
  */
 export function ifRange(fieldValue: string, headers: IfRangeHeaders): boolean {
@@ -117,13 +117,13 @@ export function ifRange(fieldValue: string, headers: IfRangeHeaders): boolean {
   const left = parseHttpDate(fieldValue);
 
   if (!isValidDate(left)) {
-    throw TypeError(Msg.InvalidField);
+    throw SyntaxError(Msg.InvalidField);
   }
 
   const right = parseHttpDate(lastModified);
 
   if (!isValidDate(right)) {
-    throw TypeError(Msg.InvalidLastModified);
+    throw SyntaxError(Msg.InvalidLastModified);
   }
 
   return left.getTime() === right.getTime();
