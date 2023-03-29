@@ -44,34 +44,34 @@ export const makeOptions = (version: string): BuildOptions => ({
   },
   packageManager: "pnpm",
   mappings: {
-    "https://deno.land/x/isx@1.0.0/is_boolean.ts": {
+    "https://deno.land/x/isx@1.1.1/is_boolean.ts": {
       name: "@miyauci/isx",
-      version: "1.0.0",
+      version: "1.1.1",
       subPath: "is_boolean",
     },
-    "https://deno.land/x/isx@1.0.0/is_null.ts": {
+    "https://deno.land/x/isx@1.1.1/is_null.ts": {
       name: "@miyauci/isx",
-      version: "1.0.0",
+      version: "1.1.1",
       subPath: "is_null",
     },
-    "https://deno.land/x/isx@1.0.0/is_string.ts": {
+    "https://deno.land/x/isx@1.1.1/is_string.ts": {
       name: "@miyauci/isx",
-      version: "1.0.0",
+      version: "1.1.1",
       subPath: "is_string",
     },
-    "https://deno.land/x/isx@1.0.0/is_number.ts": {
+    "https://deno.land/x/isx@1.1.1/is_number.ts": {
       name: "@miyauci/isx",
-      version: "1.0.0",
+      version: "1.1.1",
       subPath: "is_number",
     },
-    "https://deno.land/x/isx@1.0.0/number/is_negative_number.ts": {
+    "https://deno.land/x/isx@1.1.1/number/is_negative_number.ts": {
       name: "@miyauci/isx",
-      version: "1.0.0",
+      version: "1.1.1",
       subPath: "number/is_negative_number",
     },
-    "https://deno.land/x/isx@1.0.0/date/is_valid_date.ts": {
+    "https://deno.land/x/isx@1.1.1/date/is_valid_date.ts": {
       name: "@miyauci/isx",
-      version: "1.0.0",
+      version: "1.1.1",
       subPath: "date/is_valid_date",
     },
     "https://deno.land/x/http_middleware@1.0.0/mod.ts": {
@@ -90,9 +90,9 @@ export const makeOptions = (version: string): BuildOptions => ({
       name: "@miyauci/result",
       version: "1.0.0",
     },
-    "https://deno.land/x/range_request_middleware@1.0.0/mod.ts": {
+    "https://deno.land/x/range_request_middleware@1.1.0/mod.ts": {
       name: "@httpland/range-request-middleware",
-      version: "1.0.0",
+      version: "1.1.0",
     },
     "https://deno.land/x/accept_ranges_parser@1.0.0/mod.ts": {
       name: "@httpland/accept-ranges-parser",
