@@ -86,6 +86,7 @@
     "https://deno.land/x/prelude_js@1.0.0-beta.3/multiary.ts": "afd3991456cea084bc2f995bd56b780c358ceff9c1f292ab7dfa5496af5172a8",
     "https://deno.land/x/prelude_js@1.0.0-beta.3/records.ts": "4dbb6db91ddb35aa6171a98256db97c8a8c3af9221767a8dbad21a00ebd42e7e",
     "https://deno.land/x/prelude_js@1.0.0-beta.3/unary.ts": "b79963a09af544cdbf81caf341fb25887a453670455a0808ce8c595bec4cc7e1",
+    "https://deno.land/x/prelude_js@1.0.0/to_lower_case.ts": "690b71187878b2db46b02e462b89b5acc9cda0fa2a650b296ef9292f061c1f0f",
     "https://deno.land/x/prelude_js@1.0.0/trim.ts": "9e839053220bee1c5673026ccf4ddba475c3b982b3284b1d6b86e5440821de61",
     "https://deno.land/x/range_parser@1.1.0/deps.ts": "6ea50c74f1f2f7d2ca9bc734805d06295100fcd2e714a6b3736c80c9f047c9fc",
     "https://deno.land/x/range_parser@1.1.0/mod.ts": "782f78d4a9244a83e1618e0af29a4f96b702086f9007552c69c170cff8d4c1d9",
