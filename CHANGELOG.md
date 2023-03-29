@@ -1,3 +1,15 @@
+# [1.0.0-beta.3](https://github.com/httpland/conditional-request-middleware/compare/1.0.0-beta.2...1.0.0-beta.3) (2023-03-29)
+
+
+### Bug Fixes
+
+* **if_match:** change if-match header parser logic ([90a7a37](https://github.com/httpland/conditional-request-middleware/commit/90a7a378869091693b2f4586ba3b175c687d348b))
+
+
+### Features
+
+* **mod:** export related types ([f4972a8](https://github.com/httpland/conditional-request-middleware/commit/f4972a847e67ed94abde7d1c71a88c3010542b4d))
+
 # [1.0.0-beta.2](https://github.com/httpland/conditional-request-middleware/compare/1.0.0-beta.1...1.0.0-beta.2) (2023-03-27)
 
 
