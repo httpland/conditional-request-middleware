@@ -12,8 +12,13 @@ export {
   BytesRange,
   type ComputeBoundary,
   type Handler,
+  type IntRange,
   type Middleware,
+  type OtherRange,
   type Range,
+  type RangeSet,
+  type RangeSpec,
   type RangesSpecifier,
+  type SuffixRange,
 } from "./deps.ts";
 export { type Precondition } from "./types.ts";
