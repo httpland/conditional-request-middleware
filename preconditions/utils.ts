@@ -50,13 +50,13 @@ export function ifModifiedSince(
   fieldValue: string,
   lastModified: string,
 ): boolean {
-  const date = parseHttpDate(fieldValue.trim());
+  const date = parseHttpDate(fieldValue);
 
   if (!isValidDate(date)) {
     throw SyntaxError(Msg.InvalidField);
   }
 
-  const lastMod = parseHttpDate(lastModified.trim());
+  const lastMod = parseHttpDate(lastModified);
 
   if (!isValidDate(lastMod)) {
     throw SyntaxError(Msg.InvalidLastModified);
@@ -75,13 +75,13 @@ export function ifUnmodifiedSince(
   fieldValue: string,
   lastModified: string,
 ): boolean {
-  const date = parseHttpDate(fieldValue.trim());
+  const date = parseHttpDate(fieldValue);
 
   if (!isValidDate(date)) {
     throw SyntaxError(Msg.InvalidField);
   }
 
-  const lastMod = parseHttpDate(lastModified.trim());
+  const lastMod = parseHttpDate(lastModified);
 
   if (!isValidDate(lastMod)) {
     throw SyntaxError(Msg.InvalidLastModified);

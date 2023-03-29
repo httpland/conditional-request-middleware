@@ -6,9 +6,6 @@ describe("parse", () => {
   it("should return star", () => {
     const table: string[] = [
       "*",
-      " *",
-      "* ",
-      "   *  ",
     ];
 
     table.forEach((input) => {
@@ -20,6 +17,8 @@ describe("parse", () => {
     const table: string[] = [
       "",
       "     ",
+      " , ",
+      ", , ,",
     ];
 
     table.forEach((input) => {
@@ -62,6 +61,10 @@ describe("parse", () => {
       `* *`,
       `**`,
       `"", *`,
+      " *",
+      "* ",
+      "   *  ",
+      "a,",
     ];
 
     table.forEach((input) => {
