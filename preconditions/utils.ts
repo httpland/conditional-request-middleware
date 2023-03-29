@@ -4,10 +4,11 @@
 import {
   compareStrong,
   compareWeak,
+  isErr,
   isString,
-  isValidDate,
   parseETag,
   parseHttpDate,
+  unsafe,
 } from "../deps.ts";
 import { parse } from "../if_match.ts";
 
@@ -50,17 +51,20 @@ export function ifModifiedSince(
   fieldValue: string,
   lastModified: string,
 ): boolean {
-  const date = parseHttpDate(fieldValue);
+  const dateContainer = unsafe(() => parseHttpDate(fieldValue));
 
-  if (!isValidDate(date)) {
+  if (isErr(dateContainer)) {
     throw SyntaxError(Msg.InvalidField);
   }
 
-  const lastMod = parseHttpDate(lastModified);
+  const date = dateContainer.value;
+  const lastModContainer = unsafe(() => parseHttpDate(lastModified));
 
-  if (!isValidDate(lastMod)) {
+  if (isErr(lastModContainer)) {
     throw SyntaxError(Msg.InvalidLastModified);
   }
+
+  const lastMod = lastModContainer.value;
 
   // The origin server SHOULD NOT perform the requested
   // method if the selected representation's last modification date is
@@ -75,17 +79,20 @@ export function ifUnmodifiedSince(
   fieldValue: string,
   lastModified: string,
 ): boolean {
-  const date = parseHttpDate(fieldValue);
+  const dateContainer = unsafe(() => parseHttpDate(fieldValue));
 
-  if (!isValidDate(date)) {
+  if (isErr(dateContainer)) {
     throw SyntaxError(Msg.InvalidField);
   }
 
-  const lastMod = parseHttpDate(lastModified);
+  const lastModContainer = unsafe(() => parseHttpDate(lastModified));
 
-  if (!isValidDate(lastMod)) {
+  if (isErr(lastModContainer)) {
     throw SyntaxError(Msg.InvalidLastModified);
   }
+
+  const date = dateContainer.value;
+  const lastMod = lastModContainer.value;
 
   // The origin server MUST NOT perform the requested method
   // if the selected representation's last modification date is more
@@ -114,17 +121,20 @@ export function ifRange(fieldValue: string, headers: IfRangeHeaders): boolean {
 
   if (!isString(lastModified)) throw Error();
 
-  const left = parseHttpDate(fieldValue);
+  const leftContainer = unsafe(() => parseHttpDate(fieldValue));
 
-  if (!isValidDate(left)) {
+  if (isErr(leftContainer)) {
     throw SyntaxError(Msg.InvalidField);
   }
 
-  const right = parseHttpDate(lastModified);
+  const rightContainer = unsafe(() => parseHttpDate(lastModified));
 
-  if (!isValidDate(right)) {
+  if (isErr(rightContainer)) {
     throw SyntaxError(Msg.InvalidLastModified);
   }
+
+  const left = leftContainer.value;
+  const right = rightContainer.value;
 
   return left.getTime() === right.getTime();
 }

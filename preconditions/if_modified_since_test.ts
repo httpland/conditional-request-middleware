@@ -77,6 +77,15 @@ describe("IfModifiedSince", () => {
             headers: { [RepresentationHeader.LastModified]: "" },
           }),
         ],
+        [
+          new Request("test:"),
+          new Response(null, {
+            headers: {
+              [ConditionalHeader.IfModifiedSince]: "",
+              [RepresentationHeader.LastModified]: "",
+            },
+          }),
+        ],
       ];
 
       table.forEach(([request, response]) => {

@@ -29,6 +29,15 @@ describe("IfMatch", () => {
           new Request("test:"),
           new Response(null, { headers: { [RepresentationHeader.ETag]: "" } }),
         ],
+        [
+          new Request("test:"),
+          new Response(null, {
+            headers: {
+              [ConditionalHeader.IfMatch]: "",
+              [RepresentationHeader.ETag]: "",
+            },
+          }),
+        ],
       ];
 
       table.forEach(([request, response]) => {

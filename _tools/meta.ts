@@ -69,11 +69,6 @@ export const makeOptions = (version: string): BuildOptions => ({
       version: "1.1.1",
       subPath: "number/is_negative_number",
     },
-    "https://deno.land/x/isx@1.1.1/date/is_valid_date.ts": {
-      name: "@miyauci/isx",
-      version: "1.1.1",
-      subPath: "date/is_valid_date",
-    },
     "https://deno.land/x/http_middleware@1.0.0/mod.ts": {
       name: "@httpland/http-middleware",
       version: "1.0.0",

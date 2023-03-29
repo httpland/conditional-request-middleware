@@ -125,6 +125,17 @@ describe("ifModifiedSince", () => {
       assertThrows(() => ifModifiedSince(filedValue, lastModified));
     });
   });
+
+  it("should return false if the input is invalid syntax", () => {
+    const table: [string, string][] = [
+      ["", "Mon, 06 Mar 2023 12:00:00 GMT"],
+      ["Mon, 06 Mar 2023 12:00:00 GMT", ""],
+    ];
+
+    table.forEach(([filedValue, etag]) => {
+      assertThrows(() => ifModifiedSince(filedValue, etag));
+    });
+  });
 });
 
 describe("ifUnmodifiedSince", () => {
@@ -221,6 +232,7 @@ describe("ifRange", () => {
       ["", { etag: "" }],
       ["", { etag: "", lastModified: "" }],
       [`""`, { etag: `"` }],
+      [`""`, {}],
       [`Sep`, { lastModified: "" }],
     ];
 

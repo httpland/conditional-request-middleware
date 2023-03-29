@@ -30,6 +30,15 @@ describe("IfNoneMatch", () => {
           new Request("test:"),
           new Response(null, { headers: { [RepresentationHeader.ETag]: "" } }),
         ],
+        [
+          new Request("test:"),
+          new Response(null, {
+            headers: {
+              [ConditionalHeader.IfNoneMatch]: "",
+              [RepresentationHeader.ETag]: "",
+            },
+          }),
+        ],
       ];
 
       table.forEach(([request, response]) => {
