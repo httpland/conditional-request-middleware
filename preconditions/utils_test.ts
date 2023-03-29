@@ -234,6 +234,7 @@ describe("ifRange", () => {
       [`""`, { etag: `"` }],
       [`""`, {}],
       [`Sep`, { lastModified: "" }],
+      [`Mon, 06 Mar 2023 12:00:01 GMT`, { lastModified: "" }],
     ];
 
     table.forEach(([filedValue, headers]) => {
