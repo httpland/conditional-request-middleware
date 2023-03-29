@@ -17,6 +17,7 @@ import {
   Status,
   SuccessfulStatus,
   type Token,
+  toLowerCase,
 } from "./deps.ts";
 import type { Precondition } from "./types.ts";
 
@@ -102,7 +103,7 @@ export function withoutConditionHeaders(
   additionalConditionHeaders: readonly string[] = [],
 ): Headers {
   additionalConditionHeaders = distinct(additionalConditionHeaders)
-    .map((v) => v.toLowerCase());
+    .map(toLowerCase);
 
   function isBannedHeader(key: string): boolean {
     return isConditionalHeader(key) ||

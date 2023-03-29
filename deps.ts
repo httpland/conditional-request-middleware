@@ -14,6 +14,7 @@ export { isNumber } from "https://deno.land/x/isx@1.1.1/is_number.ts";
 export { isNegativeNumber } from "https://deno.land/x/isx@1.1.1/number/is_negative_number.ts";
 export { isValidDate } from "https://deno.land/x/isx@1.1.1/date/is_valid_date.ts";
 export { trim } from "https://deno.land/x/prelude_js@1.0.0/trim.ts";
+export { toLowerCase } from "https://deno.land/x/prelude_js@1.0.0/to_lower_case.ts";
 export {
   type Handler,
   type Middleware,
