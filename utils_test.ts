@@ -1,6 +1,7 @@
 import {
   applyPrecondition,
   ascendPreconditionHeader,
+  hasToken,
   type Ord,
   toPriority,
   withoutConditionHeaders,
@@ -187,5 +188,11 @@ describe("withoutConditionHeaders", () => {
       ),
       new Headers({ "x-x": "" }),
     );
+  });
+});
+
+describe("hasToken", () => {
+  it("should return false if the input is invalid syntax", () => {
+    assert(!hasToken("", "none"));
   });
 });
