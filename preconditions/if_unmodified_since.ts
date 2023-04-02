@@ -41,7 +41,8 @@ import { ifUnmodifiedSince } from "./utils.ts";
  * ```
  */
 export class IfUnmodifiedSince implements Precondition {
-  field = ConditionalHeader.IfUnmodifiedSince;
+  field: `${ConditionalHeader.IfUnmodifiedSince}` =
+    ConditionalHeader.IfUnmodifiedSince;
 
   evaluate(request: Request, response: Response): boolean | undefined {
     const fieldValue = request.headers.get(ConditionalHeader.IfUnmodifiedSince);

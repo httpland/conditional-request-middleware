@@ -59,7 +59,7 @@ describe("_handler", () => {
   it("should call next handler if the selected response has not pre-evaluable status", async () => {
     const initRequest = new Request("test:", { headers: { "test": "" } });
     const select = spy(async (request: Request) => {
-      assert(await equalsRequest(request, new Request("test:")));
+      assert(await equalsRequest(request, new Request("test:"), true));
 
       return new Response(null, { status: Status.NotFound });
     });

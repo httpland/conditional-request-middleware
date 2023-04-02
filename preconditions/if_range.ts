@@ -82,7 +82,7 @@ export function evaluateIfRange(
  */
 export class IfRange implements Precondition {
   #ranges: Iterable<Range>;
-  field = ConditionalHeader.IfRange;
+  field: `${ConditionalHeader.IfRange}` = ConditionalHeader.IfRange;
   evaluate = evaluateIfRange;
 
   constructor(ranges?: Iterable<Range>) {

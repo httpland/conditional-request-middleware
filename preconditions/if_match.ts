@@ -43,7 +43,7 @@ import { ifMatch } from "./utils.ts";
  * ```
  */
 export class IfMatch implements Precondition {
-  field = ConditionalHeader.IfMatch;
+  field: `${ConditionalHeader.IfMatch}` = ConditionalHeader.IfMatch;
 
   evaluate(request: Request, response: Response): boolean | undefined {
     const fieldValue = request.headers.get(ConditionalHeader.IfMatch);
