@@ -44,7 +44,8 @@ import type { Precondition } from "../types.ts";
  * ```
  */
 export class IfModifiedSince implements Precondition {
-  field = ConditionalHeader.IfModifiedSince;
+  field: `${ConditionalHeader.IfModifiedSince}` =
+    ConditionalHeader.IfModifiedSince;
 
   evaluate(request: Request, response: Response): boolean | void {
     const fieldValue = request.headers.get(ConditionalHeader.IfModifiedSince);

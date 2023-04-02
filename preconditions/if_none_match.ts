@@ -45,7 +45,7 @@ import { isBannedHeader } from "../utils.ts";
  * ```
  */
 export class IfNoneMatch implements Precondition {
-  field = ConditionalHeader.IfNoneMatch;
+  field: `${ConditionalHeader.IfNoneMatch}` = ConditionalHeader.IfNoneMatch;
 
   evaluate(request: Request, response: Response): boolean | undefined {
     const fieldValue = request.headers.get(ConditionalHeader.IfNoneMatch);

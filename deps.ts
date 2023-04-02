@@ -25,11 +25,11 @@ export {
   isRepresentationHeader,
   RangeHeader,
   RepresentationHeader,
-} from "https://deno.land/x/http_utils@1.0.0-beta.14/header.ts";
+} from "https://deno.land/x/http_utils@1.0.0/header.ts";
 export {
   isRetrieveMethod,
   Method,
-} from "https://deno.land/x/http_utils@1.0.0-beta.14/method.ts";
+} from "https://deno.land/x/http_utils@1.0.0/method.ts";
 export {
   compareStrong,
   compareWeak,
@@ -39,7 +39,7 @@ export {
 } from "https://deno.land/x/etag_parser@1.1.0/mod.ts";
 export { isErr, unsafe } from "https://deno.land/x/result_js@1.0.0/mod.ts";
 export { ascend } from "https://deno.land/std@0.181.0/collections/_comparators.ts";
-export { withContentRange } from "https://deno.land/x/range_request_middleware@1.1.0/transform.ts";
+export { withContentRange } from "https://deno.land/x/range_request_middleware@1.2.0/transform.ts";
 export {
   type BytesContext,
   BytesRange,
@@ -51,7 +51,7 @@ export {
   type RangeSpec,
   type RangesSpecifier,
   type SuffixRange,
-} from "https://deno.land/x/range_request_middleware@1.1.0/mod.ts";
+} from "https://deno.land/x/range_request_middleware@1.2.0/mod.ts";
 export { default as parseHttpDate } from "https://esm.sh/http-dates@1.2.0";
 export {
   parseAcceptRanges,

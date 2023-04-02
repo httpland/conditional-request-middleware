@@ -4,9 +4,9 @@ export const makeOptions = (version: string): BuildOptions => ({
   test: false,
   shims: {},
   compilerOptions: {
-    lib: ["esnext", "dom", "dom.iterable"],
+    lib: ["esnext", "dom"],
   },
-  typeCheck: false,
+  typeCheck: true,
   entryPoints: ["./mod.ts"],
   outDir: "./npm",
   package: {
@@ -73,21 +73,23 @@ export const makeOptions = (version: string): BuildOptions => ({
       name: "@httpland/http-middleware",
       version: "1.0.0",
     },
-    "https://deno.land/x/http_utils@1.0.0-beta.14/header.ts": {
+    "https://deno.land/x/http_utils@1.0.0/header.ts": {
       name: "@httpland/http-utils",
-      version: "1.0.0-beta.14",
+      version: "1.0.0",
+      subPath: "header.js",
     },
-    "https://deno.land/x/http_utils@1.0.0-beta.14/method.ts": {
+    "https://deno.land/x/http_utils@1.0.0/method.ts": {
       name: "@httpland/http-utils",
-      version: "1.0.0-beta.14",
+      version: "1.0.0",
+      subPath: "method.js",
     },
     "https://deno.land/x/result_js@1.0.0/mod.ts": {
       name: "@miyauci/result",
       version: "1.0.0",
     },
-    "https://deno.land/x/range_request_middleware@1.1.0/mod.ts": {
+    "https://deno.land/x/range_request_middleware@1.2.0/mod.ts": {
       name: "@httpland/range-request-middleware",
-      version: "1.1.0",
+      version: "1.2.0",
     },
     "https://deno.land/x/accept_ranges_parser@1.0.0/mod.ts": {
       name: "@httpland/accept-ranges-parser",
