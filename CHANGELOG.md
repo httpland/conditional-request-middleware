@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/httpland/conditional-request-middleware/compare/1.0.0...1.1.0) (2023-04-02)
+
+
+### Features
+
+* **deps:** update deps version ([6dea5aa](https://github.com/httpland/conditional-request-middleware/commit/6dea5aaa039eeb997ffc0dd73914e4ed22c92220))
+
 # [1.1.0-beta.1](https://github.com/httpland/conditional-request-middleware/compare/1.0.0...1.1.0-beta.1) (2023-04-02)
 
 
