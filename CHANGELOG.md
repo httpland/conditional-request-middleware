@@ -1,3 +1,15 @@
+# [1.2.0-beta.1](https://github.com/httpland/conditional-request-middleware/compare/1.1.0...1.2.0-beta.1) (2023-05-02)
+
+
+### Bug Fixes
+
+* **if_match:** fix to parse list-based fields syntax ([0c0006d](https://github.com/httpland/conditional-request-middleware/commit/0c0006dfde15b0ff379e9bf1528af3a9b75226f9))
+
+
+### Features
+
+* **deps:** update deps version ([192e84f](https://github.com/httpland/conditional-request-middleware/commit/192e84f24f5cad9ccfc5bea9f2876cd92898a9d6))
+
 # [1.1.0](https://github.com/httpland/conditional-request-middleware/compare/1.0.0...1.1.0) (2023-04-02)
 
 
