@@ -52,7 +52,7 @@ export {
   type RangesSpecifier,
   type SuffixRange,
 } from "https://deno.land/x/range_request_middleware@1.2.0/mod.ts";
-export { default as parseHttpDate } from "https://esm.sh/http-dates@1.2.0";
+export { default as parseHttpDate } from "https://esm.sh/http-dates@1.2.0?pin=v118";
 export {
   parseAcceptRanges,
   type Token,
