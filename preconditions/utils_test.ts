@@ -71,6 +71,7 @@ describe("ifNoneMatch", () => {
       [`"a", "b", "c"`, `"d"`],
       [`W/"a", "b", "c"`, `"d"`],
       [`W/"a", "b", "c"`, `W/"d"`],
+      [`"abc,def"`, `""`],
     ];
 
     table.forEach(([filedValue, etag]) => {
@@ -83,7 +84,6 @@ describe("ifNoneMatch", () => {
       ["", ""],
       [`""`, `"`],
       [`"`, `""`],
-      [`"abc,def"`, `""`],
     ];
 
     table.forEach(([filedValue, etag]) => {

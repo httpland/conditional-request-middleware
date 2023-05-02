@@ -44,6 +44,8 @@ describe("parse", () => {
         tag: "*",
         weak: false,
       }]],
+
+      [`","`, [{ tag: ",", weak: false }]],
     ];
 
     table.forEach(([input, expected]) => {
@@ -57,7 +59,6 @@ describe("parse", () => {
       "* a",
       "*,",
       `*, ""`,
-      `","`,
       `* *`,
       `**`,
       `"", *`,
