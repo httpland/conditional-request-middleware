@@ -3,7 +3,7 @@
 
 // TODO(miyauci): External Packaging
 
-import { type ETag, parseETag, trim } from "./deps.ts";
+import { type ETag, parseETag, parseListFields } from "./deps.ts";
 
 export type IfMatch = Star | ETag[];
 export type IfNoneMatch = IfMatch;
@@ -15,9 +15,5 @@ export type Star = "*";
 export function parse(input: string): IfMatch | IfNoneMatch {
   if (input === "*") return input;
 
-  return input
-    .split(",")
-    .map(trim)
-    .filter(Boolean)
-    .map(parseETag);
+  return parseListFields(input).map(parseETag);
 }

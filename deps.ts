@@ -12,7 +12,6 @@ export { isNull } from "https://deno.land/x/isx@1.1.1/is_null.ts";
 export { isString } from "https://deno.land/x/isx@1.1.1/is_string.ts";
 export { isNumber } from "https://deno.land/x/isx@1.1.1/is_number.ts";
 export { isNegativeNumber } from "https://deno.land/x/isx@1.1.1/number/is_negative_number.ts";
-export { trim } from "https://deno.land/x/prelude_js@1.0.0/trim.ts";
 export { toLowerCase } from "https://deno.land/x/prelude_js@1.0.0/to_lower_case.ts";
 export {
   type Handler,
@@ -57,6 +56,7 @@ export {
   parseAcceptRanges,
   type Token,
 } from "https://deno.land/x/accept_ranges_parser@1.0.0/mod.ts";
+export { parseListFields } from "https://deno.land/x/http_utils@1.2.0/list.ts";
 
 export function not<T extends readonly unknown[]>(
   fn: (...args: T) => boolean,

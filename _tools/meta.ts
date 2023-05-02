@@ -95,15 +95,15 @@ export const makeOptions = (version: string): BuildOptions => ({
       name: "@httpland/accept-ranges-parser",
       version: "1.0.0",
     },
-    "https://deno.land/x/prelude_js@1.0.0/trim.ts": {
-      name: "@miyauci/prelude",
-      version: "1.0.0",
-      subPath: "trim",
-    },
     "https://deno.land/x/prelude_js@1.0.0/to_lower_case.ts": {
       name: "@miyauci/prelude",
       version: "1.0.0",
       subPath: "to_lower_case",
+    },
+    "https://deno.land/x/http_utils@1.2.0/list.ts": {
+      name: "@httpland/http-utils",
+      version: "1.2.0",
+      subPath: "list.js",
     },
   },
 });
